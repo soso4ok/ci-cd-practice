@@ -1,0 +1,17 @@
+# Ignore environment files
+.env
+*.tfvars
+
+# Ignore Terraform state files
+terraform.tfstate
+terraform.tfstate.backup
+.terraform/
+
+# Ignore build artifacts
+*.log
+node_modules/
+dist/
+__pycache__/
+
+# Ignore Kubernetes credentials
+.kube/
