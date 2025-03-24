@@ -16,5 +16,5 @@ steps:
     args:
       - '-c'
       - |
-        gcloud compute ssh vm-instance-1 --zone europe-west6 --command "docker pull gcr.io/$PROJECT_ID/my-app:$COMMIT_SHA && docker run -d -p 8080:8080 gcr.io/$PROJECT_ID/my-app:$COMMIT_SHA"
+        gcloud compute ssh vm-instance-1 --zone europe-west1 --command "docker pull gcr.io/$PROJECT_ID/my-app:$COMMIT_SHA && docker run -d -p 8080:8080 gcr.io/$PROJECT_ID/my-app:$COMMIT_SHA"
 logsBucket: 'gs://terra-ops-test'
