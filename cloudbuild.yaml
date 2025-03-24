@@ -2,22 +2,19 @@ steps:
   - name: 'hashicorp/terraform:1.0.0'
     args: ['init', '-input=false']
     dir: 'infra'
-
   - name: 'hashicorp/terraform:1.0.0'
     args: ['apply', '-auto-approve']
     dir: 'infra'
-
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/my-app:$COMMIT_SHA', '.']
     dir: 'app'
-
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/my-app:$COMMIT_SHA']
     dir: 'app'
-
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        gcloud compute ssh vm-instance-1 --zone us-central1-a --impersonate-service-account=724048276047-compute@developer.gserviceaccount.com --command "docker pull gcr.io/$PROJECT_ID/my-app:$COMMIT_SHA && docker run -d -p 8080:8080 gcr.io/$PROJECT_ID/my-app:$COMMIT_SHA"
+        gcloud compute ssh vm-instance-1 --zone europe-west6 --command "docker pull gcr.io/$PROJECT_ID/my-app:$COMMIT_SHA && docker run -d -p 8080:8080 gcr.io/$PROJECT_ID/my-app:$COMMIT_SHA"
+logsBucket: 'gs://terra-ops-test'
