@@ -1,0 +1,27 @@
+steps:  
+  - name: 'hashicorp/terraform:1.0.0'
+    args: ['init', '-input=false']
+    dir: 'infra'
+
+
+  - name: 'hashicorp/terraform:1.0.0'
+    args: ['apply', '-auto-approve']
+    dir: 'infra'
+
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/backend:$COMMIT_SHA', '.']
+    dir: 'src'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/backend:$COMMIT_SHA']
+    dir: 'src'
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud compute ssh vm-instance-1 --zone us-central1-a --command "
+          docker pull gcr.io/$PROJECT_ID/backend:$COMMIT_SHA &&
+          docker run -d -p 8080:8080 gcr.io/$PROJECT_ID/backend:$COMMIT_SHA"

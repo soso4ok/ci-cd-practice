@@ -1,3 +1,0 @@
-Google Kubernetes Engine (GKE) Cluster
-✅ Artifact Registry (for Docker images)
-✅ Service Account for Cloud Build
